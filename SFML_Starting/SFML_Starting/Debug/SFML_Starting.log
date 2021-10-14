@@ -1,2 +1,4 @@
 ﻿  Game.cpp
+D:\AProgramming\C++\Repos\SFML_Starting\SFML_Starting\SFML_Starting\Game.cpp(10,39): warning C4244: 'argument': conversion from 'const float' to 'unsigned int', possible loss of data
+D:\AProgramming\C++\Repos\SFML_Starting\SFML_Starting\SFML_Starting\Game.cpp(10,25): warning C4244: 'argument': conversion from 'const float' to 'unsigned int', possible loss of data
   SFML_Starting.vcxproj -> D:\AProgramming\C++\Repos\SFML_Starting\SFML_Starting\Debug\SFML_Starting.exe

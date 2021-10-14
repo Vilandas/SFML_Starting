@@ -1,11 +1,15 @@
 #include "Game.hpp"
+#include <sstream>
 
 const float kPlayerSpeed = 300;
+const float kWindowHeight = 480;
+const float kWindowWidth = 640;
 const sf::Time kTimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() :
-	m_window(sf::VideoMode(640, 480), "Getting Started"),
+	m_window(sf::VideoMode(kWindowWidth, kWindowHeight), "Getting Started"),
 	m_player(),
+	m_player_velocity(3, 3),
 	m_texture(),
 	m_is_moving_up(false),
 	m_is_moving_down(false),
@@ -14,15 +18,72 @@ Game::Game() :
 {
 	if (!m_texture.loadFromFile("./Media/Textures/smiley.png"))
 	{
+		return;
 	}
 
 	m_player.setTexture(m_texture);
 	m_player.setPosition(100.f, 100.f);
 }
 
+void Game::Bounce()
+{
+	m_player.move(m_player_velocity);
+
+	sf::FloatRect bounds = m_player.getGlobalBounds();
+
+	if (bounds.left + bounds.width >= kWindowWidth
+		|| bounds.left <= 0)
+	{
+		m_player_velocity.x *= -1;
+	}
+
+	if (bounds.top + bounds.height >= kWindowHeight
+		|| bounds.top <= 0)
+	{
+		m_player_velocity.y *= -1;
+	}
+}
+
+void Game::DebugInfo(sf::Time delta_time)
+{
+	std::stringstream temp_stream;
+	sf::Font font = sf::Font();
+
+	if (!font.loadFromFile("./Media/Fonts/arial.ttf"))
+	{
+		return;
+	}
+
+	temp_stream << "FPS: " << (1.0f / delta_time.asSeconds());
+	sf::Text text_fps = sf::Text(temp_stream.str(), font);
+
+	temp_stream.str("");
+
+	temp_stream << "Time Per Frame: " << delta_time.asSeconds();
+	sf::Text text_time_per_frame = sf::Text(temp_stream.str(), font);
+
+	text_time_per_frame.setPosition(0, 40);
+	temp_stream.str("");
+
+	temp_stream << "Position: ("
+		<< m_player.getPosition().x
+		<< ", "
+		<< m_player.getPosition().y
+		<< ")";
+
+	sf::Text text_player_position = sf::Text(temp_stream.str(), font);
+	
+	text_player_position.setPosition(0, 80);
+	temp_stream.str("");
+
+	m_window.draw(text_fps);
+	m_window.draw(text_time_per_frame);
+	m_window.draw(text_player_position);
+}
+
 void Game::HandlePlayerInput(sf::Keyboard::Key key, bool is_pressed)
 {
-	if (key == sf::Keyboard::W)
+	if (key == sf::Keyboard::W)	
 	{
 		m_is_moving_up = is_pressed;
 	}
@@ -57,7 +118,6 @@ sf::Vector2f Game::Normalize(sf::Vector2f input_vector) const
 }
 
 
-
 void Game::ProcessEvents()
 {
 	sf::Event event;
@@ -80,19 +140,17 @@ void Game::ProcessEvents()
 }
 
 
-void Game::Render()
+void Game::Render(sf::Time delta_time)
 {
 	m_window.clear();
 	m_window.draw(m_player);
+	DebugInfo(delta_time);
 	m_window.display();
 }
 
 
 void Game::Run()
 {
-	//sf::Text
-	//fps____
-	//time per frame
 	sf::Clock clock;
 	sf::Time time_since_last_update = sf::Time::Zero;
 
@@ -106,9 +164,10 @@ void Game::Run()
 			time_since_last_update -= kTimePerFrame;
 			ProcessEvents();
 			Update(kTimePerFrame);
+			Render(kTimePerFrame);
 		}
 
-		Render();
+		//Render(time_since_last_update);
 	}
 }
 
@@ -132,6 +191,8 @@ void Game::Update(sf::Time delta_time)
 	{
 		movement.x += 1;
 	}
+
+	Bounce();
 
 	movement = Normalize(movement);
 
