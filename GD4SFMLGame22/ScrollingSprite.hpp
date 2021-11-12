@@ -11,6 +11,7 @@ private:
 	void UpdateCurrent(sf::Time dt) override;
 	void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void ResetScrolling(sf::Time dt);
+	int CalculateDirection() const;
 
 private:
 	float m_scrollspeed;

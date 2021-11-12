@@ -23,13 +23,16 @@ void ScrollingSprite::UpdateCurrent(sf::Time dt)
 void ScrollingSprite::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     //opposite direction of scrolling
-    const float opposite_direction = -(m_scrollspeed / m_scrollspeed);
+    const float direction = CalculateDirection();
 
     target.draw(m_sprite, states);
-    states.transform.translate(0, m_sprite.getLocalBounds().height * opposite_direction);
+    states.transform.translate(0, m_sprite.getLocalBounds().height * -direction);
+
+    float xx = m_sprite.getLocalBounds().height * direction;
+    float xx2 = m_sprite.getLocalBounds().height * -direction;
 
     target.draw(m_sprite, states);
-    states.transform.translate(0, m_sprite.getLocalBounds().height * -opposite_direction);
+    states.transform.translate(0, m_sprite.getLocalBounds().height * direction);
 }
 
 void ScrollingSprite::ResetScrolling(sf::Time dt)
@@ -42,3 +45,11 @@ void ScrollingSprite::ResetScrolling(sf::Time dt)
         setPosition(0,0);
     }
 }
+
+int ScrollingSprite::CalculateDirection() const
+{
+    return m_scrollspeed >= 0
+        ? 1
+        : -1;
+}
+

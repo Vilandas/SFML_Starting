@@ -1,3 +1,20 @@
-﻿  ScrollingSprite.cpp
-D:\AProgramming\C++\Repos\SFML_Starting\GD4SFMLGame22\ScrollingSprite.cpp(38,31): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  World.cpp
+D:\AProgramming\C++\Repos\SFML_Starting\GD4SFMLGame22\World.cpp(69,61): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+D:\AProgramming\C++\Repos\SFML_Starting\GD4SFMLGame22\World.cpp(69,40): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
   GD4SFMLGame22.vcxproj -> D:\AProgramming\C++\Repos\SFML_Starting\Debug\GD4SFMLGame22.exe
