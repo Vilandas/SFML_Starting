@@ -1,20 +1,4 @@
-﻿  World.cpp
-D:\AProgramming\C++\Repos\SFML_Starting\GD4SFMLGame22\World.cpp(69,61): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-          and
-          [
-              T=int
-          ]
-D:\AProgramming\C++\Repos\SFML_Starting\GD4SFMLGame22\World.cpp(69,40): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-          and
-          [
-              T=int
-          ]
+﻿  Application.cpp
+  StateStack.cpp
+  Generating Code...
   GD4SFMLGame22.vcxproj -> D:\AProgramming\C++\Repos\SFML_Starting\Debug\GD4SFMLGame22.exe

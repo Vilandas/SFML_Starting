@@ -1,22 +1,27 @@
 #include "ScrollingSprite.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-ScrollingSprite::ScrollingSprite(const sf::Texture& texture, float scrollspeed)
-	:SpriteNode(texture)
-	,m_scrollspeed(scrollspeed)
+ScrollingSprite::ScrollingSprite(const sf::Texture& texture, float scrollspeed, bool horizontal)
+: SpriteNode(texture)
+, m_scrollspeed(scrollspeed)
+, m_horizontal(horizontal)
 {
 }
 
-ScrollingSprite::ScrollingSprite(const sf::Texture& texture, const sf::IntRect& textureRect, float scrollspeed)
-	:SpriteNode(texture, textureRect)
-	,m_scrollspeed(scrollspeed)
+ScrollingSprite::ScrollingSprite(const sf::Texture& texture, const sf::IntRect& textureRect, float scrollspeed, bool horizontal)
+: SpriteNode(texture, textureRect)
+, m_scrollspeed(scrollspeed)
+, m_horizontal(horizontal)
 {
 }
 
 void ScrollingSprite::UpdateCurrent(sf::Time dt)
 {
-    //move sprite down
-    move(sf::Vector2f(0, m_scrollspeed) * dt.asSeconds());
+    const sf::Vector2f velocity = m_horizontal
+        ? sf::Vector2f(m_scrollspeed, 0)
+        : sf::Vector2f(0, m_scrollspeed);
+
+    move(velocity * dt.asSeconds());
 	ResetScrolling(dt);
 }
 
@@ -26,27 +31,48 @@ void ScrollingSprite::DrawCurrent(sf::RenderTarget& target, sf::RenderStates sta
     const float direction = CalculateDirection();
 
     target.draw(m_sprite, states);
-    states.transform.translate(0, m_sprite.getLocalBounds().height * -direction);
 
-    float xx = m_sprite.getLocalBounds().height * direction;
-    float xx2 = m_sprite.getLocalBounds().height * -direction;
+    if (m_horizontal)
+    {
+        states.transform.translate(m_sprite.getLocalBounds().width * -direction, 0);
 
-    target.draw(m_sprite, states);
-    states.transform.translate(0, m_sprite.getLocalBounds().height * direction);
+        target.draw(m_sprite, states);
+        states.transform.translate(m_sprite.getLocalBounds().width * direction, 0);
+    }
+    else
+    {
+        states.transform.translate(0, m_sprite.getLocalBounds().height * -direction);
+
+        target.draw(m_sprite, states);
+        states.transform.translate(0, m_sprite.getLocalBounds().height * direction);
+    }
 }
 
 void ScrollingSprite::ResetScrolling(sf::Time dt)
 {
-    float translation_offset_y = abs(GetWorldPosition().y);
-    float reset_screen_height = ceil(m_sprite.getLocalBounds().height * getScale().y);
-
-    if (translation_offset_y >= reset_screen_height)
+    if (m_horizontal)
     {
-        setPosition(0,0);
+        float translation_offset_x = abs(GetWorldPosition().x);
+        float reset_screen_width = ceil(m_sprite.getLocalBounds().width * getScale().x);
+
+        if (translation_offset_x >= reset_screen_width)
+        {
+            setPosition(0, 0);
+        }
+    }
+    else
+    {
+        float translation_offset_y = abs(GetWorldPosition().y);
+        float reset_screen_height = ceil(m_sprite.getLocalBounds().height * getScale().y);
+
+        if (translation_offset_y >= reset_screen_height)
+        {
+            setPosition(0, 0);
+        }
     }
 }
 
-int ScrollingSprite::CalculateDirection() const
+float ScrollingSprite::CalculateDirection() const
 {
     return m_scrollspeed >= 0
         ? 1

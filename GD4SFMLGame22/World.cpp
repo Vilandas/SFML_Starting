@@ -52,6 +52,7 @@ void World::LoadTextures()
 	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
 	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
 	m_textures.Load(Textures::kSpace, "Media/Textures/Space.png");
+	m_textures.Load(Textures::kTitleScreen, "Media/Textures/Title.png");
 }
 
 void World::BuildScene()
