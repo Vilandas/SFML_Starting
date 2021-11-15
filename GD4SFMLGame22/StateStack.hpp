@@ -11,6 +11,7 @@
 #include "TitleState.hpp"
 #include "GameState.hpp"
 #include "MenuState.hpp"
+#include "PauseState.hpp"
 
 class StateStack : private sf::NonCopyable
 {

@@ -13,6 +13,8 @@ public:
 	void Run();
 
 private:
+	void LoadTextures();
+	void LoadFonts();
 	void ProcessInput();
 	void Update(sf::Time dt);
 	void Render();
@@ -22,6 +24,7 @@ private:
 private:
 	sf::RenderWindow m_window;
 	Player m_player;
+	bool m_paused;
 
 	TextureHolder m_textures;
 	FontHolder m_fonts;

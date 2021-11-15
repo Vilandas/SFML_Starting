@@ -9,10 +9,30 @@ const sf::Time Application::kTimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
 : m_window(sf::VideoMode(640, 480), "States", sf::Style::Close)
-, m_stack(State::Context(m_window, m_textures, m_fonts, m_player))
+, m_stack(State::Context(m_window, m_textures, m_fonts, m_player, m_paused))
 , m_statistics_numframes(0)
 {
+	LoadTextures();
+	LoadFonts();
 	RegisterStates();
+
+	m_font = m_fonts.Get(Fonts::kMain);
+
+	m_stack.PushState(StateID::kTitle);
+}
+
+void Application::LoadTextures()
+{
+	m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
+	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
+	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
+	m_textures.Load(Textures::kSpace, "Media/Textures/Space.png");
+	m_textures.Load(Textures::kTitleScreen, "Media/Textures/Title.png");
+}
+
+void Application::LoadFonts()
+{
+	m_fonts.Load(Fonts::kMain, "Media/Fonts/Sansation.ttf");
 }
 
 void Application::Run()

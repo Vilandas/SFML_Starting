@@ -4,18 +4,17 @@
 #include <iostream>
 #include <limits>
 
-World::World(sf::RenderWindow& window)
-	: m_window(window)
-	, m_camera(window.getDefaultView())
-	, m_textures()
+World::World(State::Context context)
+	: m_window(*context.window)
+	, m_camera(m_window.getDefaultView())
+	, m_textures(*context.textures)
 	, m_scenegraph()
 	, m_scene_layers()
-	, m_world_bounds(0.f, 0.f, m_camera.getSize().x, 480)
+	, m_world_bounds(0.f, 0.f, m_camera.getSize().x, m_camera.getSize().y)
 	, m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y /2.f)
 	, m_scrollspeed(-50.f)
 	, m_player_aircraft(nullptr)
 {
-	LoadTextures();
 	BuildScene();
 	std::cout << m_camera.getSize().x << m_camera.getSize().y << std::endl;
 	m_camera.setCenter(m_spawn_position);
@@ -44,15 +43,6 @@ void World::Draw()
 {
 	m_window.setView(m_camera);
 	m_window.draw(m_scenegraph);
-}
-
-void World::LoadTextures()
-{
-	m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
-	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
-	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
-	m_textures.Load(Textures::kSpace, "Media/Textures/Space.png");
-	m_textures.Load(Textures::kTitleScreen, "Media/Textures/Title.png");
 }
 
 void World::BuildScene()

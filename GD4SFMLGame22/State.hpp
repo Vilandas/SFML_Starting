@@ -22,11 +22,12 @@ public:
 
 	struct Context
 	{
-		Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player);
+		Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player, bool& paused);
 		sf::RenderWindow* window;
 		TextureHolder* textures;
 		FontHolder* fonts;
 		Player* player;
+		bool* paused;
 	};
 
 public:
@@ -42,6 +43,9 @@ protected:
 	void RequestStackClear();
 
 	Context GetContext() const;
+
+	bool GetPaused() const;
+	void SetPaused(bool paused);
 
 private:
 	StateStack* m_stack;
