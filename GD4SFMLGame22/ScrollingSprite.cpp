@@ -30,21 +30,21 @@ void ScrollingSprite::DrawCurrent(sf::RenderTarget& target, sf::RenderStates sta
     //opposite direction of scrolling
     const float direction = CalculateDirection();
 
-    target.draw(m_sprite, states);
+    target.draw(GetSprite(), states);
 
     if (m_horizontal)
     {
-        states.transform.translate(m_sprite.getLocalBounds().width * -direction, 0);
+        states.transform.translate(GetSprite().getLocalBounds().width * -direction, 0);
 
-        target.draw(m_sprite, states);
-        states.transform.translate(m_sprite.getLocalBounds().width * direction, 0);
+        target.draw(GetSprite(), states);
+        states.transform.translate(GetSprite().getLocalBounds().width * direction, 0);
     }
     else
     {
-        states.transform.translate(0, m_sprite.getLocalBounds().height * -direction);
+        states.transform.translate(0, GetSprite().getLocalBounds().height * -direction);
 
-        target.draw(m_sprite, states);
-        states.transform.translate(0, m_sprite.getLocalBounds().height * direction);
+        target.draw(GetSprite(), states);
+        states.transform.translate(0, GetSprite().getLocalBounds().height * direction);
     }
 }
 
@@ -53,7 +53,7 @@ void ScrollingSprite::ResetScrolling(sf::Time dt)
     if (m_horizontal)
     {
         float translation_offset_x = abs(GetWorldPosition().x);
-        float reset_screen_width = ceil(m_sprite.getLocalBounds().width * getScale().x);
+        float reset_screen_width = ceil(GetSprite().getLocalBounds().width * getScale().x);
 
         if (translation_offset_x >= reset_screen_width)
         {
@@ -63,7 +63,7 @@ void ScrollingSprite::ResetScrolling(sf::Time dt)
     else
     {
         float translation_offset_y = abs(GetWorldPosition().y);
-        float reset_screen_height = ceil(m_sprite.getLocalBounds().height * getScale().y);
+        float reset_screen_height = ceil(GetSprite().getLocalBounds().height * getScale().y);
 
         if (translation_offset_y >= reset_screen_height)
         {
