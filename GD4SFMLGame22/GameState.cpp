@@ -4,7 +4,7 @@
 
 GameState::GameState(StateStack& stack, Context context)
 : State(stack, context)
-, m_world(context)
+, m_world(*context.window)
 , m_player(*context.player)
 {
 }
@@ -16,29 +16,21 @@ void GameState::Draw()
 
 bool GameState::Update(sf::Time dt)
 {
-	if (!GetPaused())
-	{
-		m_world.Update(dt);
-		CommandQueue& commands = m_world.getCommandQueue();
-		m_player.HandleRealtimeInput(commands);
-	}
-
+	m_world.Update(dt);
+	CommandQueue& commands = m_world.getCommandQueue();
+	m_player.HandleRealtimeInput(commands);
 	return true;
 }
 
 bool GameState::HandleEvent(const sf::Event& event)
 {
-	if (!GetPaused())
+	CommandQueue& commands = m_world.getCommandQueue();
+	m_player.HandleEvent(event, commands);
+
+	//Escape should bring up the Pause Menu
+	if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 	{
-		CommandQueue& commands = m_world.getCommandQueue();
-		m_player.HandleEvent(event, commands);
-
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-		{
-			RequestStackPush(StateID::kPause);
-			SetPaused(true);
-		}
+		RequestStackPush(StateID::kPause);
 	}
-
 	return true;
 }

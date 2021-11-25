@@ -3,7 +3,6 @@
 #include "ResourceIdentifiers.hpp"
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
-#include "ScrollingSprite.hpp"
 #include "Aircraft.hpp"
 #include "Layers.hpp"
 
@@ -14,7 +13,6 @@
 #include <array>
 
 #include "CommandQueue.hpp"
-#include "State.hpp"
 
 //Foward
 namespace sf
@@ -26,7 +24,7 @@ namespace sf
 class World : private sf::NonCopyable
 {
 public:
-	explicit World(State::Context context);
+	explicit World(sf::RenderWindow& window);
 	void Update(sf::Time dt);
 	void Draw();
 	CommandQueue& getCommandQueue();
@@ -41,7 +39,7 @@ private:
 private:
 	sf::RenderWindow& m_window;
 	sf::View m_camera;
-	TextureHolder& m_textures;
+	TextureHolder m_textures;
 	SceneNode m_scenegraph;
 	std::array<SceneNode*, static_cast<int>(Layers::kLayerCount)> m_scene_layers;
 	CommandQueue m_command_queue;

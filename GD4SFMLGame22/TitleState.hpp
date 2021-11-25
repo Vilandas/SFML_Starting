@@ -19,3 +19,4 @@ private:
 	bool m_show_text;
 	sf::Time m_text_effect_time;
 };
+

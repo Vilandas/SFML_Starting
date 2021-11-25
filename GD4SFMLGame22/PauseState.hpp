@@ -1,28 +1,22 @@
 #pragma once
-#include <SFML/Graphics/RectangleShape.hpp>
+#include "State.hpp"
+
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
-
-#include "State.hpp"
 
 class PauseState : public State
 {
 public:
 	PauseState(StateStack& stack, Context context);
-	virtual void Draw();
-	virtual bool Update(sf::Time dt);
-	virtual bool HandleEvent(const sf::Event& event);
-	void UpdateOptionText();
+
+	virtual void		Draw();
+	virtual bool		Update(sf::Time dt);
+	virtual bool		HandleEvent(const sf::Event& event);
+
 
 private:
-	enum class Options
-	{
-		Play,
-		Exit
-	};
-
-private:
-	std::vector<sf::Text> m_options;
-	std::size_t m_option_index;
-	sf::RectangleShape m_dark_rectangle_background;
+	sf::Sprite			m_background_sprite;
+	sf::Text			m_paused_text;
+	sf::Text			m_instruction_text;
 };
+

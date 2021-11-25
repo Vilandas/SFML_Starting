@@ -1,38 +1,33 @@
 #include "Application.hpp"
 
-class TitleState;
-class MenuState;
-class GameState;
-class PauseState;
+#include "State.hpp"
+#include "StateID.hpp"
+#include "TitleState.hpp"
+#include "GameState.hpp"
+#include "MenuState.hpp"
+#include "PauseState.hpp"
 
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-: m_window(sf::VideoMode(640, 480), "States", sf::Style::Close)
-, m_stack(State::Context(m_window, m_textures, m_fonts, m_player, m_paused))
+:m_window(sf::VideoMode(640, 480), "States", sf::Style::Close)
+, m_stack(State::Context(m_window, m_textures, m_fonts, m_player))
 , m_statistics_numframes(0)
 {
-	LoadTextures();
-	LoadFonts();
+	m_window.setKeyRepeatEnabled(false);
+
+	m_fonts.Load(Fonts::Main, "Media/Fonts/Sansation.ttf");
+	m_textures.Load(Textures::kTitleScreen, "Media/Textures/TitleScreen.png");
+	m_textures.Load(Textures::kButtonNormal, "Media/Textures/ButtonNormal.png");
+	m_textures.Load(Textures::kButtonSelected, "Media/Textures/ButtonSelected.png");
+	m_textures.Load(Textures::kButtonPressed, "Media/Textures/ButtonPressed.png");
+
+	m_statistics_text.setFont(m_fonts.Get(Fonts::Main));
+	m_statistics_text.setPosition(5.f, 5.f);
+	m_statistics_text.setCharacterSize(10u);
+
 	RegisterStates();
-
-	m_font = m_fonts.Get(Fonts::kMain);
-
 	m_stack.PushState(StateID::kTitle);
-}
-
-void Application::LoadTextures()
-{
-	m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
-	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
-	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
-	m_textures.Load(Textures::kSpace, "Media/Textures/Space.png");
-	m_textures.Load(Textures::kTitleScreen, "Media/Textures/Title.png");
-}
-
-void Application::LoadFonts()
-{
-	m_fonts.Load(Fonts::kMain, "Media/Fonts/Sansation.ttf");
 }
 
 void Application::Run()
@@ -49,6 +44,11 @@ void Application::Run()
 			time_since_last_update -= kTimePerFrame;
 			ProcessInput();
 			Update(kTimePerFrame);
+
+			if(m_stack.IsEmpty())
+			{
+				m_window.close();
+			}
 		}
 		UpdateStatistics(elapsedTime);
 		Render();
@@ -68,9 +68,9 @@ void Application::ProcessInput()
 	}
 }
 
-void Application::Update(sf::Time dt)
+void Application::Update(sf::Time delta_time)
 {
-	m_stack.Update(dt);
+	m_stack.Update(delta_time);
 }
 
 void Application::Render()
@@ -105,4 +105,5 @@ void Application::RegisterStates()
 	m_stack.RegisterState<MenuState>(StateID::kMenu);
 	m_stack.RegisterState<GameState>(StateID::kGame);
 	m_stack.RegisterState<PauseState>(StateID::kPause);
+
 }

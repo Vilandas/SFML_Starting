@@ -4,17 +4,18 @@
 #include <iostream>
 #include <limits>
 
-World::World(State::Context context)
-	: m_window(*context.window)
-	, m_camera(m_window.getDefaultView())
-	, m_textures(*context.textures)
+World::World(sf::RenderWindow& window)
+	: m_window(window)
+	, m_camera(window.getDefaultView())
+	, m_textures()
 	, m_scenegraph()
 	, m_scene_layers()
-	, m_world_bounds(0.f, 0.f, m_camera.getSize().x, m_camera.getSize().y)
+	, m_world_bounds(0.f, 0.f, m_camera.getSize().x, 8000)
 	, m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y /2.f)
 	, m_scrollspeed(-50.f)
 	, m_player_aircraft(nullptr)
 {
+	LoadTextures();
 	BuildScene();
 	std::cout << m_camera.getSize().x << m_camera.getSize().y << std::endl;
 	m_camera.setCenter(m_spawn_position);
@@ -23,7 +24,7 @@ World::World(State::Context context)
 void World::Update(sf::Time dt)
 {
 	//Scroll the world
-	//m_camera.move(0, m_scrollspeed * dt.asSeconds());
+	m_camera.move(0, m_scrollspeed * dt.asSeconds());
 
 	m_player_aircraft->SetVelocity(0.f, 0.f);
 
@@ -45,6 +46,13 @@ void World::Draw()
 	m_window.draw(m_scenegraph);
 }
 
+void World::LoadTextures()
+{
+	m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
+	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
+	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
+}
+
 void World::BuildScene()
 {
 	//Initialize the different layers
@@ -57,12 +65,12 @@ void World::BuildScene()
 
 	//Prepare the background
 	sf::Texture& texture = m_textures.Get(Textures::kDesert);
-	sf::IntRect textureRect(m_world_bounds.left, m_world_bounds.top, texture.getSize().x, texture.getSize().y);
+	sf::IntRect textureRect(m_world_bounds);
 	//Tile the texture to cover our world
 	texture.setRepeated(true);
 
 	//Add the background sprite to our scene
-	std::unique_ptr<ScrollingSprite> background_sprite(new ScrollingSprite(texture, textureRect, -m_scrollspeed));
+	std::unique_ptr<SpriteNode> background_sprite(new SpriteNode(texture, textureRect));
 	background_sprite->setPosition(m_world_bounds.left, m_world_bounds.top);
 	m_scene_layers[static_cast<int>(Layers::kBackground)]->AttachChild(std::move(background_sprite));
 

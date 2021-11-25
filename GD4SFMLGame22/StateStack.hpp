@@ -1,17 +1,21 @@
 #pragma once
-#include <functional>
-#include <map>
-#include <vector>
-#include <SFML/System/NonCopyable.hpp>
-#include <SFML/System/Time.hpp>
-#include <SFML/Window/Event.hpp>
-
 #include "State.hpp"
 #include "StateID.hpp"
-#include "TitleState.hpp"
-#include "GameState.hpp"
-#include "MenuState.hpp"
-#include "PauseState.hpp"
+#include "ResourceIdentifiers.hpp"
+
+#include <SFML/System/NonCopyable.hpp>
+#include <SFML/System/Time.hpp>
+
+#include <vector>
+#include <functional>
+#include <map>
+
+
+namespace sf
+{
+	class Event;
+	class RenderWindow;
+}
 
 class StateStack : private sf::NonCopyable
 {
@@ -38,13 +42,13 @@ public:
 	bool IsEmpty() const;
 
 private:
-	State::Ptr CreateState(StateID state_id);
+	State::Ptr CreateState(StateID stateID);
 	void ApplyPendingChanges();
 
 private:
 	struct PendingChange
 	{
-		explicit PendingChange(Action action, StateID state_id = StateID::kNone);
+		explicit PendingChange(Action action, StateID stateID = StateID::kNone);
 		Action action;
 		StateID state_id;
 	};
@@ -64,3 +68,7 @@ void StateStack::RegisterState(StateID state_id)
 		return State::Ptr(new T(*this, m_context));
 	};
 }
+
+
+
+

@@ -2,17 +2,16 @@
 
 #include "StateStack.hpp"
 
-State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player, bool& paused)
+State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player)
 : window(&window)
 , textures(&textures)
 , fonts(&fonts)
 , player(&player)
-, paused(&paused)
 {
 }
 
 State::State(StateStack& stack, Context context)
-: m_stack(&stack)
+:m_stack(&stack)
 , m_context(context)
 {
 }
@@ -21,9 +20,6 @@ State::~State()
 {
 }
 
-void State::Draw()
-{
-}
 
 void State::RequestStackPush(StateID state_id)
 {
@@ -43,14 +39,4 @@ void State::RequestStackClear()
 State::Context State::GetContext() const
 {
 	return m_context;
-}
-
-bool State::GetPaused() const
-{
-	return *m_context.paused;
-}
-
-void State::SetPaused(bool paused)
-{
-	*m_context.paused = paused;
 }

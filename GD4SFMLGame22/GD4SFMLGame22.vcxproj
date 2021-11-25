@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\loanej\dev\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\AProgramming\C++\Repos\SFML_Starting\SFML-2.5.1\lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,17 +147,20 @@
   <ItemGroup>
     <ClCompile Include="Aircraft.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneNode.cpp" />
-    <ClCompile Include="ScrollingSprite.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateStack.cpp" />
@@ -169,13 +172,17 @@
     <ClInclude Include="Aircraft.hpp" />
     <ClInclude Include="AircraftType.hpp" />
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="Button.hpp" />
     <ClInclude Include="Category.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandQueue.hpp" />
+    <ClInclude Include="Component.hpp" />
+    <ClInclude Include="Container.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Fonts.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="Label.hpp" />
     <ClInclude Include="Layers.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
@@ -184,7 +191,6 @@
     <ClInclude Include="ResourceHolder.hpp" />
     <ClInclude Include="ResourceIdentifiers.hpp" />
     <ClInclude Include="SceneNode.hpp" />
-    <ClInclude Include="ScrollingSprite.hpp" />
     <ClInclude Include="SpriteNode.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="StateID.hpp" />

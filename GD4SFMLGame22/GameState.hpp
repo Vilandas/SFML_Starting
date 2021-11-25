@@ -1,5 +1,4 @@
 #pragma once
-
 #include "State.hpp"
 #include "World.hpp"
 
@@ -15,3 +14,4 @@ private:
 	World m_world;
 	Player& m_player;
 };
+

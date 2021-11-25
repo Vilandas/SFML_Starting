@@ -1,9 +1,9 @@
 #include "TitleState.hpp"
-#include "ResourceHolder.hpp"
+#include "Utility.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "Utility.hpp"
+#include "ResourceHolder.hpp"
 
 TitleState::TitleState(StateStack& stack, Context context)
 : State(stack, context)
@@ -11,7 +11,7 @@ TitleState::TitleState(StateStack& stack, Context context)
 , m_text_effect_time(sf::Time::Zero)
 {
 	m_background_sprite.setTexture(context.textures->Get(Textures::kTitleScreen));
-	m_text.setFont(context.fonts->Get(Fonts::kMain));
+	m_text.setFont(context.fonts->Get(Fonts::Main));
 	m_text.setString("Press any key to continue");
 	Utility::CentreOrigin(m_text);
 	m_text.setPosition(context.window->getView().getSize() / 2.f);
@@ -37,7 +37,6 @@ bool TitleState::Update(sf::Time dt)
 		m_show_text = !m_show_text;
 		m_text_effect_time = sf::Time::Zero;
 	}
-
 	return true;
 }
 
@@ -48,6 +47,5 @@ bool TitleState::HandleEvent(const sf::Event& event)
 		RequestStackPop();
 		RequestStackPush(StateID::kMenu);
 	}
-
 	return true;
 }
